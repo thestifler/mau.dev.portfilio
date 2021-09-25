@@ -1,9 +1,10 @@
 package maudev.portfolio.repository;
 
-import java.util.List;
+
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
 
 import maudev.portfolio.entity.User;
@@ -12,6 +13,6 @@ import maudev.portfolio.entity.User;
 public interface UserRepository extends JpaRepository<User,Long>{
     
 
-    public List<User> findAll();
+    public User findByIdAndStatus(Long id,String status);
 
 }

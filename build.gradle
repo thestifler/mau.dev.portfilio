@@ -31,6 +31,11 @@ dependencies {
 	//implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 	implementation 'org.springframework.webflow:spring-binding:2.5.1.RELEASE'
 	implementation group: 'javax.validation', name: 'validation-api'
+	implementation 'de.mkammerer:argon2-jvm:2.10.1'
+	implementation 'org.modelmapper:modelmapper:2.4.4'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+
 
 
 

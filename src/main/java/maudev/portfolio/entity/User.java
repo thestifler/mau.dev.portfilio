@@ -1,5 +1,6 @@
 package maudev.portfolio.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_portfolio")
 @Data
 @AllArgsConstructor @NoArgsConstructor @Builder
-public class User {
+public class User implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,15 +34,24 @@ public class User {
     private Long id;
     @Column(name = "use_name")
     private String name;
+
+
     @Column(name = "use_lastname")
     private String lastname;
+
     @Column(name = "use_aboutme")
     private String aboutme;
+ 
     @Column(name = "use_jobposition")
     private String jobposition;
+  
+    @Column(name = "use_password")
+    private String wordpass;
     @Column(name = "use_status")
+
     private String status;
     @Column(name = "use_createat")
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createat;
 

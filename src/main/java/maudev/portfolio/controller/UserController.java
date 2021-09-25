@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import maudev.portfolio.dto.UserDto;
 import maudev.portfolio.entity.Contact;
 import maudev.portfolio.entity.Project;
 import maudev.portfolio.entity.ProjectPhoto;
@@ -39,6 +41,7 @@ import maudev.portfolio.service.SkillService;
 import maudev.portfolio.service.UserService;
 import maudev.portfolio.service.WorkExperinceService;
 import maudev.portfolio.util.ErrorMessage;
+import maudev.portfolio.util.security.TokenJwt;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -59,18 +62,30 @@ public class UserController {
     @Autowired
     private SkillDetailService skillDetailService;
 
-    @GetMapping
-    public ResponseEntity<List<User>> userList(){
-      List<User> users = userService.findAll();
-      if(users.isEmpty()){
-          return ResponseEntity.noContent().build();
-      }
+    @Autowired
+    private TokenJwt tokenJwt;
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserDto> userList(@PathVariable(value = "id")Long id){
+        UserDto users = userService.getUser(id);
+
+        String token = tokenJwt.create(String.valueOf(users.getId()), users.getName());
+
+        users.setToken(token);
+
+    
       return ResponseEntity.ok(users);
       
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user ){
+    public ResponseEntity<User> createUser(@RequestBody User user , @RequestHeader(value = "Authorization", required = false) String token){
+        
+        String tokenValido = tokenJwt.getKey(token);
+
+        if (tokenValido == null) {
+            return ResponseEntity.noContent().build();
+        }
         User createUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
 
